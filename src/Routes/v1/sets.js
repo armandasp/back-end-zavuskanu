@@ -3,6 +3,7 @@ const mysql = require('mysql2/promise');
 const Joi = require('joi');
 
 const { dbConfig } = require('../../config');
+const { isLoggedIn } = require('../../middleware');
 
 const router = express.Router();
 
@@ -28,7 +29,7 @@ router.get('/sets', async (req, res) => {
   }
 });
 
-router.post('/sets', async (req, res) => {
+router.post('/sets', isLoggedIn, async (req, res) => {
   let userInputs = req.body;
   try {
     userInputs = await setSchema.validateAsync(userInputs);

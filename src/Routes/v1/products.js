@@ -3,6 +3,7 @@ const mysql = require('mysql2/promise');
 const Joi = require('joi');
 
 const { dbConfig } = require('../../config');
+const { isLoggedIn } = require('../../middleware');
 
 const router = express.Router();
 
@@ -29,7 +30,7 @@ router.get('/products', async (req, res) => {
   }
 });
 
-router.post('/products', async (req, res) => {
+router.post('/products', isLoggedIn, async (req, res) => {
   let userInputs = req.body;
   try {
     userInputs = await productSchema.validateAsync(userInputs);
