@@ -5,14 +5,14 @@ const Joi = require('joi');
 const { dbConfig } = require('../../config');
 const { isLoggedIn } = require('../../middleware');
 
-const router = express.Router();
-
 const setSchema = Joi.object({
   image: Joi.string().trim().required(),
   title: Joi.string().trim().required(),
   price: Joi.number().positive().required(),
   description: Joi.string().trim().required(),
 });
+
+const router = express.Router();
 
 router.get('/', (req, res) => {
   res.send({ msg: 'sets works' });
@@ -25,7 +25,7 @@ router.get('/sets', async (req, res) => {
     await con.end();
     res.send(data);
   } catch (err) {
-    res.status(500).send({ err: 'Data was not passed' });
+    res.status(500).send({ err: 'Data was not received' });
   }
 });
 
