@@ -6,7 +6,7 @@ const { isLoggedIn } = require('../../middleware');
 
 const router = express.Router();
 
-router.get('/add', isLoggedIn, async (req, res) => {
+router.get('/', isLoggedIn, async (req, res) => {
   try {
     const con = await mysql.createConnection(dbConfig);
     const [data] = await con.execute(

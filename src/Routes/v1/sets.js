@@ -14,14 +14,10 @@ const setSchema = Joi.object({
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.send({ msg: 'sets works' });
-});
-
-router.get('/sets', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const con = await mysql.createConnection(dbConfig);
-    const [data] = await con.execute('SELECT * FROM sets');
+    const [data] = await con.execute('SELECT * FROM sets WHERE archived = 0');
     await con.end();
     res.send(data);
   } catch (err) {
@@ -50,6 +46,18 @@ router.post('/sets', isLoggedIn, async (req, res) => {
     return res.send({ msg: data });
   } catch (err) {
     return res.status(500).send({ err: 'data was not passed' });
+  }
+});
+
+router.delete('/delete/:id', isLoggedIn, async (req, res) => {
+  try {
+    const con = await mysql.createConnection(dbConfig);
+    const [data] = await con.execute(`
+        UPDATE sets SET archived = true WHERE id = ${req.params.id}`);
+    await con.end();
+    return res.send(data);
+  } catch (err) {
+    return res.status(500).send({ err: 'data not deleted' });
   }
 });
 
