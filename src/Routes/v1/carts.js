@@ -21,7 +21,7 @@ router.get('/', isLoggedIn, async (req, res) => {
   }
 });
 
-router.post('/add/:id', isLoggedIn, async (req, res) => {
+router.post('/addProduct/:id', isLoggedIn, async (req, res) => {
   try {
     const con = await mysql.createConnection(dbConfig);
     const [data] = await con.execute(
@@ -30,6 +30,21 @@ router.post('/add/:id', isLoggedIn, async (req, res) => {
       )}, image, title, price FROM products WHERE products.id = ${
         req.params.id
       }`,
+    );
+    await con.end();
+    return res.send({ msg: data });
+  } catch (err) {
+    return res.status(400).send({ err: 'data was not passed.' });
+  }
+});
+
+router.post('/addSet/:id', isLoggedIn, async (req, res) => {
+  try {
+    const con = await mysql.createConnection(dbConfig);
+    const [data] = await con.execute(
+      `INSERT INTO carts (users_id, image, title, price) SELECT ${mysql.escape(
+        req.user.id,
+      )}, image, title, price FROM sets WHERE sets.id = ${req.params.id}`,
     );
     await con.end();
     return res.send({ msg: data });
