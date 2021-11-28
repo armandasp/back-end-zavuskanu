@@ -32,7 +32,7 @@ router.post('/add/:id', isLoggedIn, async (req, res) => {
       }`,
     );
     await con.end();
-    return res.send(data);
+    return res.send({ msg: data });
   } catch (err) {
     return res.status(400).send({ err: 'data was not passed.' });
   }
