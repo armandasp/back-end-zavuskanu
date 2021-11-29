@@ -10,9 +10,9 @@ router.get('/', isLoggedIn, async (req, res) => {
   try {
     const con = await mysql.createConnection(dbConfig);
     const [data] = await con.execute(
-      `SELECT image, title, price FROM carts WHERE users_id = ${mysql.escape(
+      `SELECT id, image, title, price FROM carts WHERE users_id = ${mysql.escape(
         req.user.id,
-      )}`,
+      )} AND archived = 0`,
     );
     await con.end();
     return res.send(data);
