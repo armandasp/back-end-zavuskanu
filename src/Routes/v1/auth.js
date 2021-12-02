@@ -9,7 +9,6 @@ const { jwtSecret, dbConfig } = require('../../config');
 const router = express.Router();
 
 const registerSchema = Joi.object({
-  fullname: Joi.string().trim().required(),
   email: Joi.string().email().lowercase().trim().required(),
   password: Joi.string().min(6).max(255).required(),
 });
