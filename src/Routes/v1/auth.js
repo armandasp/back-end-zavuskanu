@@ -9,6 +9,8 @@ const { jwtSecret, dbConfig } = require('../../config');
 const router = express.Router();
 
 const registerSchema = Joi.object({
+  name: Joi.string().trim().required(),
+  surname: Joi.string().trim().required(),
   email: Joi.string().email().lowercase().trim().required(),
   password: Joi.string().min(6).max(255).required(),
 });
@@ -35,9 +37,11 @@ router.post('/register', async (req, res) => {
   try {
     const con = await mysql.createConnection(dbConfig);
     const [data] = await con.execute(
-      `INSERT INTO users (fullname, email, password) VALUES (${mysql.escape(
-        userInputs.fullname,
-      )}, ${mysql.escape(userInputs.email)}, '${encryptedPassword}')`,
+      `INSERT INTO users (name, surname, email, password) VALUES (${mysql.escape(
+        userInputs.name,
+      )},${mysql.escape(userInputs.surname)}, ${mysql.escape(
+        userInputs.email,
+      )}, '${encryptedPassword}')`,
     );
     await con.end();
     return res.send({ msg: data });
@@ -68,7 +72,10 @@ router.post('/login', async (req, res) => {
     if (!answer) {
       return res.status(401).send({ err: 'Incorect email or password' });
     }
-    const token = jwt.sign({ id: data[0].id, email: data[0].email }, jwtSecret);
+    const token = jwt.sign(
+      { id: data[0].id, email: data[0].email, name: data[0].name },
+      jwtSecret,
+    );
 
     return res.send({ token });
   } catch (err) {
