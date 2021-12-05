@@ -1,28 +1,10 @@
 const express = require('express');
 const mysql = require('mysql2/promise');
-const sgMail = require('@sendgrid/mail');
-
-sgMail.setApiKey(process.env.API_KEY);
 
 const { dbConfig } = require('../../config');
 const { isLoggedIn } = require('../../middleware');
 
 const router = express.Router();
-
-const msg = {
-  to: 'zavuskanutest@gmail.com',
-  from: 'ziezdriote@gmail.com',
-  subject: 'Testing node email service',
-  text: 'Veikia, puiku!',
-};
-
-// sgMail.send(msg, (err, info) => {
-//   if (err) {
-//     console.log('Email not sent');
-//   }
-
-//   console.log('Email sent succesfully');
-// });
 
 router.get('/', isLoggedIn, async (req, res) => {
   try {

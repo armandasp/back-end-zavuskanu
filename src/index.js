@@ -8,6 +8,7 @@ const products = require('./Routes/v1/products');
 const sets = require('./Routes/v1/sets');
 const comments = require('./Routes/v1/comments');
 const carts = require('./Routes/v1/carts');
+const sendEmail = require('./Routes/v1/sendEmail');
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use('/v1/products', products);
 app.use('/v1/sets', sets);
 app.use('/v1/comments', comments);
 app.use('/v1/carts', carts);
+app.use('/v1/send', sendEmail);
 
 app.get('/', (req, res) => {
   res.send({ msg: 'Server is working succesfully' });
