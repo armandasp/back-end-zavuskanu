@@ -65,4 +65,19 @@ router.delete('/delete/:id', isLoggedIn, async (req, res) => {
   }
 });
 
+router.delete('/deletecart', isLoggedIn, async (req, res) => {
+  try {
+    const con = await mysql.createConnection(dbConfig);
+    const [data] = await con.execute(
+      `DELETE FROM carts WHERE users_id = ${mysql.escape(
+        req.user.id,
+      )}`,
+    );
+    await con.end();
+    return res.send({ msg: data });
+  } catch (err) {
+    return res.status(500).send({ err: 'data was not deleted' });
+  }
+});
+
 module.exports = router;

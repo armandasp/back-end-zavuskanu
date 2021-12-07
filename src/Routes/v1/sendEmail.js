@@ -65,7 +65,7 @@ router.post('/sendEmail', async (req, res) => {
       msg: 'užklausa išsiusta. Susisieksime su jumis, kai paruošime užsakymą.',
     });
   } catch (err) {
-    return res.status(500).send({ err: 'something was wrong' });
+    return res.status(500).send({ err: 'Išsiusti nepavyko. Bandykite dar kartą.' });
   }
 });
 
