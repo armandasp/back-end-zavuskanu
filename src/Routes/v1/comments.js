@@ -11,15 +11,11 @@ const commentSchema = Joi.object({
   comment: Joi.string().trim().required(),
 });
 
-router.get('/', (req, res) => {
-  res.send({ msg: 'comments works' });
-});
-
-router.get('/comments', isLoggedIn, async (req, res) => {
+router.get('/', isLoggedIn, async (req, res) => {
   try {
     const con = await mysql.createConnection(dbConfig);
     const [data] = await con.execute(
-      'SELECT comments.comment, users.fullname FROM comments LEFT JOIN users ON (comments.users_id = users.id) ',
+      'SELECT comments.comment, users.name FROM comments LEFT JOIN users ON (comments.users_id = users.id) ',
     );
     await con.end();
     return res.send(data);
