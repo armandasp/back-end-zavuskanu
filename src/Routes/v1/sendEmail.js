@@ -10,8 +10,9 @@ const emailSchema = Joi.object({
   products: Joi.array().items(Joi.string()).required(),
   totalPrice: Joi.string().trim().required(),
   name: Joi.string().trim().required(),
-  email: Joi.string().lowercase().trim().required(),
+  phone: Joi.string().lowercase().trim().required(),
   address: Joi.string().trim().required(),
+  email: Joi.string().lowercase().trim().required(),
 });
 
 const sendEmail = (to, from, subject, text) => {
@@ -51,8 +52,9 @@ router.post('/sendEmail', async (req, res) => {
       <p>Kliento duomenys:</p>
       <ul>
           <li>${userInputs.name}</li>
-          <li>${userInputs.email}</li>
+          <li>${userInputs.phone}</li>
           <li>${userInputs.address}</li>
+          <li>${userInputs.email}</li>
       </ul>
       <p>Užsakymo duomenys:</p>
       <ul>
@@ -65,7 +67,9 @@ router.post('/sendEmail', async (req, res) => {
       msg: 'užklausa išsiusta. Susisieksime su jumis, kai paruošime užsakymą.',
     });
   } catch (err) {
-    return res.status(500).send({ err: 'Išsiusti nepavyko. Bandykite dar kartą.' });
+    return res
+      .status(500)
+      .send({ err: 'Išsiusti nepavyko. Bandykite dar kartą.' });
   }
 });
 
